@@ -12,12 +12,15 @@ import {
   Ship,
 } from "lucide-react";
 
-const NAV_ITEMS = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+const PRIMARY_NAV_ITEMS = [
   { href: "/inbox", label: "RFQ Inbox", icon: Inbox },
   { href: "/quotes", label: "Quotes", icon: FileText },
-  { href: "/customers", label: "Customers", icon: Users },
   { href: "/rates", label: "Rates", icon: Tags },
+  { href: "/dashboard", label: "Analytics", icon: LayoutDashboard },
+];
+
+const SECONDARY_NAV_ITEMS = [
+  { href: "/customers", label: "Customers", icon: Users },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
@@ -36,7 +39,7 @@ export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
       </div>
 
       <nav className="flex-1 space-y-0.5 px-3">
-        {NAV_ITEMS.map((item) => {
+        {PRIMARY_NAV_ITEMS.map((item) => {
           const active = pathname === item.href || pathname.startsWith(item.href + "/");
           const Icon = item.icon;
           return (
@@ -52,6 +55,32 @@ export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             >
               <Icon
                 size={17}
+                strokeWidth={2}
+                className={active ? "text-accent" : "text-text-muted group-hover:text-text-secondary"}
+              />
+              {item.label}
+            </Link>
+          );
+        })}
+
+        <div className="my-3 border-t border-border" />
+
+        {SECONDARY_NAV_ITEMS.map((item) => {
+          const active = pathname === item.href || pathname.startsWith(item.href + "/");
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={onNavigate}
+              className={`group flex items-center gap-2.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors duration-150 ${
+                active
+                  ? "bg-accent-soft text-accent"
+                  : "text-text-muted hover:bg-surface-sunken hover:text-text-secondary"
+              }`}
+            >
+              <Icon
+                size={15}
                 strokeWidth={2}
                 className={active ? "text-accent" : "text-text-muted group-hover:text-text-secondary"}
               />

@@ -17,7 +17,7 @@ export default function DashboardPage() {
   return (
     <div className="animate-fade-up">
       <PageHeader
-        title="Dashboard"
+        title="Analytics"
         subtitle="Turn incoming RFQs into quote-ready responses faster. Automate the repetitive work — keep pricing decisions under human control."
         action={<Badge tone="neutral">Demo environment</Badge>}
       />
@@ -32,7 +32,7 @@ export default function DashboardPage() {
             <StatTile
               label="Avg. response time"
               value={`${dashboardStats.avgResponseMinutes} min`}
-              sub={`↓ ${dashboardStats.responseTimeReduction}% potential reduction`}
+              sub={`↓ ${dashboardStats.responseTimeReduction}% potential reduction (illustrative)`}
               accent
             />
           </div>
@@ -99,7 +99,7 @@ export default function DashboardPage() {
             <StatTile label="Quotes prepared" value={dashboardStats.quotesPreparedTotal} />
             <StatTile label="Avg. processing time" value={`${dashboardStats.avgProcessingMinutes} min`} />
             <StatTile label="Avg. manual time" value={`${dashboardStats.avgManualMinutes} min`} />
-            <StatTile label="Time saved" value={`${dashboardStats.timeSavedHours} hrs`} accent />
+            <StatTile label="Time saved" value={`${dashboardStats.timeSavedHours} hrs`} sub="Illustrative example" accent />
             <StatTile label="Pending" value={dashboardStats.pendingTotal} />
           </div>
         </section>

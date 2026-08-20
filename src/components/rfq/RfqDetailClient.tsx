@@ -13,8 +13,9 @@ import {
   ShieldCheck,
   Pencil,
   Save,
-  CheckCircle2,
   ScanSearch,
+  Paperclip,
+  Wand2,
 } from "lucide-react";
 import { Card, CardHeader } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -76,7 +77,7 @@ export function RfqDetailClient({ id, autoplay }: { id: string; autoplay: boolea
     setQuoteItems((prev) => prev.map((li, i) => (i === index ? { ...li, amount } : li)));
   }
 
-  function handleApproveAndSend() {
+  function handleGenerateResponse() {
     setEmailPanelOpen(true);
     setTimeout(() => emailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
   }
@@ -159,6 +160,10 @@ export function RfqDetailClient({ id, autoplay }: { id: string; autoplay: boolea
             <pre className="whitespace-pre-wrap font-sans text-[13px] leading-relaxed text-text-secondary">
               {rfq.emailBody}
             </pre>
+            <div className="mt-4 inline-flex items-center gap-2 rounded-lg border border-border bg-surface-sunken px-3 py-2">
+              <Paperclip size={13} className="text-text-muted" />
+              <span className="text-xs font-medium text-text-secondary">shipment_details.pdf</span>
+            </div>
           </div>
         </Card>
 
@@ -256,9 +261,9 @@ export function RfqDetailClient({ id, autoplay }: { id: string; autoplay: boolea
                   <Save size={13} />
                   Save Draft
                 </Button>
-                <Button variant="primary" size="sm" onClick={handleApproveAndSend} disabled={rfq.status === "sent"}>
-                  <CheckCircle2 size={13} />
-                  {rfq.status === "sent" ? "Sent" : "Approve & Send"}
+                <Button variant="primary" size="sm" onClick={handleGenerateResponse} disabled={rfq.status === "sent"}>
+                  <Wand2 size={13} />
+                  {rfq.status === "sent" ? "Sent" : emailPanelOpen ? "Response Generated" : "Generate Response"}
                 </Button>
               </div>
             </div>
@@ -271,7 +276,15 @@ export function RfqDetailClient({ id, autoplay }: { id: string; autoplay: boolea
           <Card>
             <CardHeader title="Customer Email" subtitle="Generated response — review before sending" action={<Mail size={16} className="mt-0.5 text-text-muted" />} />
             <div className="p-5">
-              <EmailDraftPanel draft={rfq.emailDraft} onSend={() => markQuoteSent(rfq.id)} sent={rfq.status === "sent"} />
+              <EmailDraftPanel
+                draft={rfq.emailDraft}
+                onSend={() => markQuoteSent(rfq.id)}
+                sent={rfq.status === "sent"}
+                rfqNumber={rfq.rfqNumber}
+                total={quoteItems.reduce((sum, li) => sum + li.amount, 0)}
+                origin={rfq.origin}
+                destination={rfq.destination}
+              />
             </div>
           </Card>
         </div>
